@@ -2,7 +2,7 @@ VPATH = . dosbox resid-fp
 CPP  = g++.exe
 CC   = gcc.exe
 WINDRES = windres.exe
-CFLAGS = -O3 -march=i686 -fomit-frame-pointer -DDYNAREC -fprofile-use
+CFLAGS = -O3 -march=i686 -fomit-frame-pointer -DDYNAREC
 OBJ = 386.o 386_dynarec.o 386_dynarec_ops.o 808x.o acer386sx.o ali1429.o amstrad.o cdrom-ioctl.o \
 	codegen.o codegen_timing_486.o codegen_timing_pentium.o codegen_x86.o config.o cpu.o dac.o \
 	device.o dma.o fdc.o gameport.o headland.o i430lx.o i430fx.o i430vx.o ide.o intel.o \
