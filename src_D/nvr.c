@@ -11,6 +11,7 @@ uint8_t nvrram[128];
 int nvraddr;
 
 int nvr_dosave = 0;
+int nvr_exists = 1;
 
 static int nvr_onesec_time = 0, nvr_onesec_cnt = 0;
 
@@ -74,10 +75,10 @@ void writenvr(uint16_t addr, uint8_t val, void *priv)
         if (addr&1)
         {
 //                if (nvraddr == 0x33) pclog("NVRWRITE33 %02X %04X:%04X %i\n",val,CS,pc,ins);
-                if (nvraddr >= 0xe && nvrram[nvraddr] != val) 
+                if (nvraddr >= 0xe && nvrram[nvraddr] != val)
                    nvr_dosave = 1;
                 if (nvraddr!=0xC && nvraddr!=0xD) nvrram[nvraddr]=val;
-                
+
                 if (nvraddr==0xA)
                 {
 //                        pclog("NVR rate %i\n",val&0xF);
@@ -134,9 +135,9 @@ void loadnvr()
                 case ROM_PC1640:     f = romfopen("pc1640.nvr",     "rb"); break;
                 case ROM_PC200:      f = romfopen("pc200.nvr",      "rb"); break;
                 case ROM_PC2086:     f = romfopen("pc2086.nvr",     "rb"); break;
-                case ROM_PC3086:     f = romfopen("pc3086.nvr",     "rb"); break;                
+                case ROM_PC3086:     f = romfopen("pc3086.nvr",     "rb"); break;
                 case ROM_IBMAT:      f = romfopen("at.nvr",         "rb"); break;
-                case ROM_CMDPC30:    f = romfopen("cmdpc30.nvr",    "rb"); nvrmask = 127; break;                
+                case ROM_CMDPC30:    f = romfopen("cmdpc30.nvr",    "rb"); nvrmask = 127; break;
                 case ROM_AMI286:     f = romfopen("ami286.nvr",     "rb"); nvrmask = 127; break;
                 case ROM_DELL200:    f = romfopen("dell200.nvr",    "rb"); nvrmask = 127; break;
                 case ROM_IBMAT386:   f = romfopen("at386.nvr",      "rb"); nvrmask = 127; break;
@@ -155,6 +156,7 @@ void loadnvr()
         if (!f)
         {
                 memset(nvrram,0xFF,128);
+                nvr_exists = 0;
                 return;
         }
         fread(nvrram,128,1,f);
@@ -175,7 +177,7 @@ void savenvr()
                 case ROM_PC2086:     f = romfopen("pc2086.nvr",     "wb"); break;
                 case ROM_PC3086:     f = romfopen("pc3086.nvr",     "wb"); break;
                 case ROM_IBMAT:      f = romfopen("at.nvr",         "wb"); break;
-                case ROM_CMDPC30:    f = romfopen("cmdpc30.nvr",    "wb"); break;                
+                case ROM_CMDPC30:    f = romfopen("cmdpc30.nvr",    "wb"); break;
                 case ROM_AMI286:     f = romfopen("ami286.nvr",     "wb"); break;
                 case ROM_DELL200:    f = romfopen("dell200.nvr",    "wb"); break;
                 case ROM_IBMAT386:   f = romfopen("at386.nvr",      "wb"); break;
